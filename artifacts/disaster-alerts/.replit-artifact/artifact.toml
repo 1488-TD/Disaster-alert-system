@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Disaster Alert Network"
+description = "A real-time disaster alert communication platform for authorities to publish targeted emergency notifications and for the public to see verified active alerts, safety guidance, and delivery status."
+version = "1.0.0"
+id = "artifacts/disaster-alerts"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25845
+
+[services.development]
+run = "pnpm --filter @workspace/disaster-alerts run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/disaster-alerts", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/disaster-alerts/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25845"
+BASE_PATH = "/"
